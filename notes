@@ -1,0 +1,49 @@
+class Greetings(object):
+
+    def __init__(self,name):
+        used every time you create an instance of the class
+        self.name = name
+    
+    def thingy(self):
+        return f"Hi, {self.name}"
+
+    def goodbye(self):
+        return f"bye, {self.name}!"
+
+
+
+class Person(Greetings):
+    here, you could use Person without the init function, it would still ask for  a name.
+
+    def __init__(self, sex, names, args, kwargs):
+        self.sex = sex
+        super().__init__(name)
+        (this is a magic line that says grab all the arguments and all the inits and run it with all the appropriate args and kwargs)
+
+
+to be more versatile: 
+    def __init__(self, *args, **kwargs):
+        self.sex = kwargs.get('sex')
+        self.name = kwargs.get('name')
+        super().__init__(*args, **kwargs)
+
+        .get will look at a dictionary and return either the value you've asked for, or none.  (short version of try except search for key value)  Get has two arguments; you can actually tell it what to return if something isn't there.  
+
+super() says for each Person, you're going to do something.  you're manually calling the init function on all your instantiations. you'll normally *args, **kwargs.  person is inheriting all of its properties (it's not a base class).  the greetings class is a base object.  super says to go as far up as you can until you hit a base class (or base classes).  then all of the parents we want to manually run the init function and pass i the *args and **kwargs.  
+
+    def t(name, *args, sex = None, **kwargs):
+        print(name)
+        print(*args)
+        print(sex)
+        print(**kwargs)
+
+the first argument will be presumed to be name, all other non-keyword argument will be considered args.  sex will be printed separately and then all the other kwargs will be printed 
+
+you will frequetly write functions where you don't know what is going to be passed in or how much is going to be passed in.  for these, use * and **.  (args and kwargs are convention).  the * says take in everything that is non-named.  all non-named go first; all named arguments go second.  named arguements are keyword arguments (kwargs).  args become a tuple, kwargs become a dictionary. 
+
+tuple is immutable.  not a list because it's immutable.  
+
+every time you instantiate it, you'll have to pass in the required arguments
+
+
+
