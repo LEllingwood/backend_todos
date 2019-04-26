@@ -1,3 +1,4 @@
+# ```
 import datetime
 from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
@@ -21,6 +22,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('task')
 parser.add_argument('due date')
 parser.add_argument('completed')
+parser.add_argument('date completed')
 
 
 # Todo
@@ -39,14 +41,14 @@ class Todo(Resource):
         args = parser.parse_args()
         task = {'task title': args['task']}
         due_date = {'due date': args['due date']}
-        creation_date = {'creation date': str(datetime.datetime.now())}
+        last_updated = {'last upated': str(datetime.datetime.now())}
         completed = {'completed': args['completed']}
-        TODOS[todo_id] = task, creation_date, due_date, completed
+        completed_date = {'date completed': args['date completed']}
+        if completed and not completed_date:
+            completed_date = {'completed date': str(datetime.datetime.now())}
+        TODOS[todo_id] = task, last_updated, due_date, completed
         return task, due_date, completed, 201
 
-# Last updated date
-# Completed (true/false)
-# Completion date
 
 # TodoList
 # shows a list of all todos, and lets you POST to add new tasks
@@ -58,9 +60,9 @@ class TodoList(Resource):
         args = parser.parse_args()
         todo_id = int(max(TODOS.keys()).lstrip('todo')) + 1
         todo_id = 'todo%i' % todo_id
-        TODOS[todo_id] = {'task': args['task'], 'completed': args['completed'], 'due date': args['due date']}
+        # creation_date = {'creation date': str(datetime.datetime.now())}
+        TODOS[todo_id] = {'task': args['task'], 'creation_date': str(datetime.datetime.now()), 'completed': args['completed'], 'due date': args['due date']}
         return TODOS[todo_id], 201
-
 
 
 ## Actually setup the Api resource routing here
@@ -70,3 +72,4 @@ api.add_resource(Todo, '/todos/<todo_id>')
 
 if __name__ == '__main__':
     app.run(debug=True)
+# ```
