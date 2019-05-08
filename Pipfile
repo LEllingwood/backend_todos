@@ -1,14 +1,39 @@
-[[source]]
-name = "pypi"
-url = "https://pypi.org/simple"
-verify_ssl = true
+class Todo(Resource):
+    def get(self, todo_id):
+        abort_if_todo_doesnt_exist(todo_id)
+        return TODOS[todo_id]
 
-[dev-packages]
-flake8 = "*"
-black = "*"
+    def delete(self, todo_id):
+        abort_if_todo_doesnt_exist(todo_id)
+        del TODOS[todo_id]
+        return '', 204
 
-[packages]
-flask-restful = "*"
+    def put(self, todo_id):
+        args = parser.parse_args()
+		
+		"""
+		The example code serves to check if the user passed 
+		in a given argument. If they did, it will update the 
+		dictionary key-value pair to what the user passed in (e.g. args['task']). 
+		If the user doesn't pass in a given argument, no 
+		changes will be made to the dictionary.
+		"""
+		if args.get('task'):
+			TODOS[todo_id].update({'task': args['task']})
+        if args.get('due_date'):
+            TODOS[todo_id].upate({'due date': args['due_date']}
+        if args.get('completed'):
+            TODOS[todo_id].update({'completed': args['completed']}
+        task = {'task': args['task']}
+        due_date = {'due date': args['due date']}
+        last_updated = {'last upated': str(datetime.datetime.now())}
+        completed = {'completed': args['completed']}
+        completed_date = {'date completed': args['date completed']}
+        if completed and not completed_date:
+            completed_date = {'completed date': str(datetime.datetime.now())}
+        TODOS[todo_id] = task, last_updated, due_date, completed
+        return task, due_date, completed, 201
+Collapse
 
-[requires]
-python_version = "3.7"
+
+
