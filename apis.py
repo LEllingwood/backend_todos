@@ -44,7 +44,7 @@ class Todo(Resource):
         # targeted_todo.update({'task title': args['task'],'due date': args["due date"], "completed": args["completed"]})
         if args.get('task'):
             TODOS[todo_id].update({'task': args['task']})
-            
+
         if args.get('due_date'):
             TODOS[todo_id].upate({'due date': args['due_date']}
 
